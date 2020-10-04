@@ -1,5 +1,8 @@
 Box Line Text
 =============
+**What I added is just the multi-user real-time collaboration on this board : several users can edit the board in the same time. When you create a board via the button below, it will create a URL with a specific ID, so that each board you use is unique.**
+
+
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/99b4904a-b8a1-42b7-8495-13215fb6ba7d/deploy-status)](https://app.netlify.com/sites/box-line-text/deploys)
 [![Build Status](https://travis-ci.org/jncraton/box-line-text.svg?branch=master)](https://travis-ci.org/jncraton/box-line-text)
