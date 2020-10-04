@@ -1,11 +1,11 @@
 Box Line Text
 =============
 **This project is a fork from BLT. 
-What I added is just the multi-user real-time collaboration on this board : several users can edit the board in the same time. When you create a board via the button below, it will create a URL with a specific ID, so that each board you use is unique.
+What I added is just the multi-user real-time collaboration on this board : several users can edit the board in the same time. When you create a board via the button below, it will create a URL with a specific ID, so that each board you use is unique.<br />
 You can see it in action here: https://teamretrospective.fr/whiteboard/**
 
 
-**Below is the BLT documentation**
+**Below is the BLT documentation**  
 Box Line Text (BLT) is a simple virtual whiteboarding tool. It is minimalistic and contains no visible UI for a clean screencasting experience.
 
 [Use it](https://box-line-text.netlify.app/)
