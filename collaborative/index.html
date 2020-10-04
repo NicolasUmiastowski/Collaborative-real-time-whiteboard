@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>Real-time collaborative Whiteboard</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   
+   <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-database.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-auth.js"></script>
+   <link rel="stylesheet" href="whiteboard-style.css">
+
+</head>
+<body class="bodyretro">
+ 
+<div class="container principal">
+ <div class="row toprow">
+   <div class="col-12">
+       <span class="logo">&nbsp;Real-time collaborative whiteboard</span>
+   </div>
+</div>
+<div class="row mt-1">
+   <div class="col-12">  
+     This real-time collaborative whiteboard is based on <b><a href="https://github.com/jncraton/box-line-text">Box Line Text (BLT)</a></b> by <a href="https://github.com/jncraton">Jon Craton</a><br /><br /> 
+       <b>BLT</b>  is a simple virtual whiteboarding tool. It is minimalistic and contains no visible UI for a clean screencasting experience.<br /><br />
+     What I added is just the multi-user real-time collaboration on this board : several users can edit the board in the same time.
+       When you create a board via the button below, it will vreate a URL with a specific ID, so that each board you use is unique.
+  </div> 
+ </div>    
+  <div class="row mt-1">
+   <div class="col-12">  
+     <br /><form action="#" onSubmit="return false;">
+          <input type="submit" class="btn btn-info btn-sm" value="Create a board" id="btnCreateBoard">
+       </form>
+    </div>
+</div>       
+  <div class="row mt-3">
+   <div class="col-12">   
+    <br />The following instructions come from the original BLT <a href="https://github.com/jncraton/box-line-text/blob/master/readme.md">documentation.</a> <br /> 
+       <img src="../img/demo.gif"><br />
+    <br />
+       <h3>Usage</h3>
+    <ul style="border:none;box-sizing: content-box;;"><li >Click anywhere to create a text element</li>
+        <li>Click and drag a straight line to make a line</li>
+        <li>Click and drag a diagonal line to make a box</li>
+        <li>Hold shift to use the mouse as an eraser</li>
+        <li>Share documents via URL</li>
+   </ul>
+       <h3>Advanced usage</h3>
+       <ul><li>Press Ctrl-z to undo creating elements</li>
+       <li>Press Ctrl and drag an element to move it</li>
+       <li>Press Ctrl and drag the background to move all elements</li>
+       <li>Immediately after creating an element, use the arrow keys to cycle through a few basic styles:</li>
+       <ul><li>Boxes - Background colors</li>
+       <li>Lines - Arrows</li>
+           <li>Floating text - Double size, quad size, vertical</li></ul>
+       </ul>    
+  </div>
+ </div>    
+    
+
+    
+ 
+<div class="row">
+   <div class="col-1" style="color:red" id="savingerror">
+   </div>
+</div>
+ 
+</div>  
+   
+    <script type="text/javascript">
+    
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyB-UBCtIyY4bUIt555kdJnSDq7atLrVcUI",
+    authDomain: "team-retrospective.firebaseapp.com",
+    databaseURL: "https://team-retrospective.firebaseio.com",
+    projectId: "team-retrospective",
+    storageBucket: "team-retrospective.appspot.com",
+    messagingSenderId: "685306225228",
+    appId: "1:685306225228:web:925c290cbc8973c90b8ae9"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  
+   
+
+//******************CREATE A BOARD**************************        
+
+var btnCreateBoard = document.querySelector("#btnCreateBoard");
+btnCreateBoard.addEventListener('click', function (event) {
+  
+   return firebase.auth().signInAnonymously().then(() => {  
+  
+    
+  
+        
+     
+
+
+   var createId = function () {
+    var hex = ['a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+	/**
+	 * Randomly shuffle an array
+	 * https://stackoverflow.com/a/2450976/1293256
+	 */
+    var shuffle = function () {
+
+		var currentIndex = hex.length;
+		var temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+            temporaryValue = hex[currentIndex];
+			hex[currentIndex] = hex[randomIndex];
+			hex[randomIndex] = temporaryValue;
+		}
+
+	};
+
+	var randomString = function () {
+
+		var randomString = 't';
+
+		for (var i = 0; i < 12; i++) {
+            shuffle(hex);
+            randomString += hex[0];
+        }
+
+		return randomString;
+
+	};
+        return randomString();
+}                     
+                      
+var savingerror = document.getElementById("savingerror");                     
+                  
+var saveRetroInfo  = function (id) {
+    
+    firebase.database().ref('whiteboard/' + boardId).set({
+    content :"#"
+
+  }, function(error) {
+    if (error) {
+      var text = document.createTextNode("Error saving the value. Please retry");
+      savingerror.appendChild(text);
+    } else {
+      var text = document.createTextNode("");
+      savingerror.appendChild(text);
+    }
+  });
+}                    
+    var boardId = createId();
+    saveRetroInfo(boardId);
+      console.log("user",firebase.auth().currentUser.uid);
+    window.location.href="whiteboard.html?id="+boardId;
+  	
+			});  });
+</script>
+</body>
+</html>

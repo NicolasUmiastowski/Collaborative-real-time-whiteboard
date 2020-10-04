@@ -1,0 +1,277 @@
+.bodyevents {
+background-color:#0079bf;
+margin:10px;
+padding:10px;
+}
+
+.bodyretro {
+background-color:#fafbfc;
+}
+
+
+.toprow {
+  /*background-color:#218838;*/
+  background-color:  #00a8ff;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+.col {
+background-color:#fafbfc;
+padding:2px;
+color:#ffffff;
+}
+
+.quoteZone {
+   font-size:13px;
+   background-color:lightgrey; 
+   border:2px dashed blue; 
+   vertical-align:middle;
+   padding:5px; 
+  
+}
+
+.limitWidth {
+ color:#ffffff;
+ border-left:1px solid white;
+ padding:4px;   
+}
+
+.postIt {
+background-color:hsl(240,75%,90%);
+color:#000000;    
+padding:4px;
+min-height:40px;
+/*font:25px/1.0 'Just Another Hand', Noto Sans CJK JP, arial;*/
+font-size:13px;    
+border:3px solid #777;
+border-radius: 10% 300% 10% 300% / 300% 10% 300% 10%;
+}
+ 
+.green {
+ background-color:green; 
+ color:#ffffff;   
+}
+
+.redy {
+ background-color:red; 
+ }
+
+.purple {
+ background-color:purple;   
+}
+
+.nocolor {
+    background-color:transparent;
+    border:none;
+}
+
+.changecolor {
+ background-color:#fbc531;   
+}
+
+.actioncolor {
+ border:none;   
+ background-color:purple;
+ color:#ffffff;   
+}
+
+.item {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.conti {
+ position:relative;
+ margin-top:1px;
+}
+
+.retroList {
+background-color:#dee2e4;
+border:none;
+}
+
+
+
+.contentStage {
+background-color:#ffffff;
+border:1px solid black;
+min-height:300px;
+color:#000000;
+line-height:15px;
+padding:2px;
+}
+
+.hide {
+ display:none;
+ visibility:hidden;
+}
+
+.nextlink {
+background-color:#ffffff;
+}
+
+.nextbtn {
+color:#ffffff;
+background-color
+}
+
+.whitespace {
+background-color:#FFFFFF;
+}
+
+.is-hidden {
+	display: none;
+    visibility: hidden;
+}
+
+
+.overlay-div {
+   height:100%;
+   width: 100%;
+   position:absolute;
+   background-color:#000000;
+   opacity:0.1;
+}
+
+
+
+.editButton {
+     background-color:orange;
+}
+
+.saveButton {
+     background-color:red;
+}
+
+.selectedDiv {
+     background-color:#fcf5af;
+     border : 5px solid red;
+}
+
+.modList {
+background-color:#ffffff;
+min-height:350px;
+color:#000000;
+padding:4px;  
+/*border:5px dashed #0f4b9a;
+/*border-radius: 10% 300% 10% 300% / 300% 10% 300% 10%;*/
+}
+
+.logo {
+    color:#ffffff;
+    font-weight:bold;
+    font-family:DejaVu Sans Mono, monospace;
+    -webkit-font-smoothing:antialiased;
+    font-size:1em;
+}
+
+
+.successBtn {
+     border : 1px solid orange;
+}
+
+.difficultyBtn {
+     border : 1px solid green;
+     
+}
+
+.keepBtn {
+    border : none;
+    color:#ffffff;
+}
+
+.stopBtn {
+     border : none;
+     background-color:#fab1a0   
+}
+
+.changeBtn {
+     border : none;
+}
+
+
+
+.actionBtn {
+    border : none;
+    color:#000000;
+}
+
+.keepPost {
+    border : none;
+    background-color:purple;
+    color:#ffffff;
+}
+
+
+.actionPost {
+    border : none;
+    background-color:#0097e6; 
+    color:#ffffff;
+}
+
+.successPost {
+    border : none;
+    background-color:green; 
+    color:#ffffff;
+}
+
+.difficultyPost {
+    border : none;
+    background-color:#e84118; 
+    color:#ffffff;
+}
+
+.changePost {
+    border : none;
+    background-color:#FF8C00; 
+    color:#ffffff;
+}
+
+.stopPost {
+    border : none;
+    background-color:#e55039;   
+    color:#ffffff;
+}
+
+
+.deleteBtn {
+     background-color:#3d3d3d;
+     border : none;
+     font-size:11px;
+     height : 22px;
+     width : 18px;
+     color:#ff3838;
+     font-weight:bold;
+}
+
+.modifyBtn {
+     background-color:#7ed6df;
+     border : none;
+     font-size:11px;
+     height : 22px;
+     width : 18px;
+     color : #ffffff;
+     padding:0px;
+}
+
+.updBtn {
+     background-color:grey;
+     border : none;
+     height : 22px;
+     width : 18px;
+}
+
+
+/**
+ * Form Validation Errors
+ */
+.error {
+	border-color: #ffffff;
+}
+
+.error-message {
+	color: red;
+	font-style: italic;
+	margin-bottom: 1em;
+}
