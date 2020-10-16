@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+<meta charset=utf-8 /> 
+<meta name=viewport content="width=device-width, initial-scale=1"/>
+<title>Box Line Text</title>
+
+<style>
+html,body {
+height:100%;
+width:100%;
+z-index:0;
+overflow:hidden;
+color:#222;
+}
+section,p,arrow {
+position:absolute;
+margin:0;
+padding:0;
+}
+section,arrow {
+border:2px solid #777;
+border-radius:10px;
+}
+p {
+z-index:1;
+font:32px Noto Sans CJK JP, arial;
+padding:0 .5em;
+color:inherit;
+line-height:64px;
+outline:none;
+}
+arrow {
+border-width:0 4px 4px 0;
+border-radius:2px;
+padding:5px;
+}
+arrow.right { margin-top:-7px;  right:0px; transform:rotate(-45deg) }
+arrow.left  { margin-top:-7px;  left:0px; transform:rotate(135deg) }
+arrow.down  { margin-left:-7px; bottom:0px; transform:rotate(45deg) }
+arrow.up    { margin-left:-7px; top:0px; transform:rotate(-135deg) }
+section[data-decoration="1"] { background-color: hsl(0,75%,90%); }
+section[data-decoration="2"] { background-color: hsl(120,75%,90%); }
+section[data-decoration="3"] { background-color: hsl(240,75%,90%); }
+p[data-decoration="1"] { writing-mode:vertical-lr }
+p[data-decoration="2"] { font-size:128px; line-height:256px }
+p[data-decoration="3"] { font-size:64px; line-height:128px }
+</style>
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('click', function (e) {
+ 
+dragstart = [e.clientX, e.clientY]
+console.log ("dragstart",dragstart)
+createElement2(dragstart, [256, 256], false)
+dragstart = false
+window.move_target = null
+save()
+
+})
+
+
+
+
+
+function createElement2(p1, p2, temporary=true, content="", decoration=0) {
+document.querySelectorAll('body>*:empty').forEach(e => e.remove())
+let e = document.createElement('section')
+;e.style.width ="100px"
+e.style.height = "100px"
+//console.log ([e.style.width, e.style.height])
+let text = document.createElement('p')
+text.contentEditable = 'true'
+text.innerHTML = (new Option(content)).innerHTML.replace(/\n/g, '<br>')
+if (!temporary) e.append(text)
+
+
+setDecoration(e, decoration)
+;e.style.left = dragstart[0] + 'px';
+e.style.top = dragstart[1] + 'px';
+
+document.body.append(e)
+text.focus()
+}
+
+
+let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
+function createElement(p1, p2, temporary=true, content="", decoration=0) {
+document.querySelectorAll('body>*:empty').forEach(e => e.remove())
+let e = document.createElement('section')
+
+
+
+e.style.width = snap(Math.abs(p1[0] - p2[0]))
+e.style.height = 0
+
+
+
+
+let text = document.createElement('p')
+text.contentEditable = 'true'
+text.innerHTML = (new Option(content)).innerHTML.replace(/\n/g, '<br>')
+if (!temporary) e.append(text)
+if (!e.style.width && !e.style.height) e = text
+if (e.style.width && !e.style.height) text.style.top = '-66px'
+setDecoration(e, decoration)
+;[e.style.left, e.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])))
+document.body.append(e)
+
+}
+chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_?/:@.~!$&'()*+,="
+posToChar = x => chars[(parseInt(x) + 2) / 64 || 0]
+charToPos = c => (chars.indexOf(c) < 64) ? chars.indexOf(c) * 64 - 2 : 0
+function save() {
+location.hash = "#;" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
+let header = 8 * !!e.style.width + 
+4 * !!e.style.height +
+(parseInt(e.dataset.decoration) || 0)
+return encodeURIComponent(
+chars[header] + 
+posToChar(e.style.left) + posToChar(e.style.top) +
+(e.style.width ? posToChar(e.style.width) : '') +
+(e.style.height ? posToChar(e.style.height) : '') +
+getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
+}).join(';')
+}
+function eraseElement(target) {
+erasing = true
+if (target != document.body) target.remove()
+}
+function getTextContent(el) {
+let html = el.innerHTML.replace(/(<div>|<br>)/g, "\n")
+.replace(/<.*?>/g, "")
+.replace(/\n$/, "")
+var tmp = document.createElement("textarea");
+tmp.innerHTML = html
+return tmp.textContent
+}
+function setDecoration(e, decoration) {
+e.querySelectorAll('arrow').forEach(a => a.remove())
+if (e.style.height && !e.style.width) {
+if (decoration == 1 || decoration == 2) addArrow(e, 'down')
+if (decoration & 0x02) addArrow(e, 'up')
+}
+if (e.style.width && !e.style.height) {
+if (decoration == 1 || decoration == 2) addArrow(e, 'right')
+if (decoration & 0x02) addArrow(e, 'left')
+}
+if (decoration || e.dataset.decoration) e.dataset.decoration = decoration
+}
+function addArrow(el, dir) {
+let arrow = document.createElement('arrow')
+arrow.classList.add(dir)
+el.append(arrow)
+}
+document.addEventListener('mousedown', e => {
+if (e.shiftKey || e.ctrlKey || e.target.tagName != 'P') {
+e.preventDefault() 
+if (e.shiftKey) eraseElement(e.target)
+else dragstart = [e.clientX, e.clientY]
+if (e.ctrlKey) {
+moveTarget = e.target
+if (e.target.tagName == 'P' && e.target.parentNode.tagName == 'SECTION') {
+moveTarget = e.target.parentNode
+}
+}
+}
+})
+document.addEventListener('mousemove', e => {
+if (e.ctrlKey) {
+let x = Math.floor((dragstart[0] - e.clientX) / 64)
+let y = Math.floor((dragstart[1] - e.clientY) / 64)
+dragstart[0] -= x * 64
+dragstart[1] -= y * 64
+let can_move = true
+let elements = document.querySelectorAll('body>*')
+if (window.moveTarget && window.moveTarget != document.body) elements = [window.moveTarget]
+elements.forEach(e => {
+if (parseInt(e.style.left) + 2 - x*64 < 0 ||
+parseInt(e.style.top) + 2 -  y*64 < 0 ||
+parseInt(e.style.left) + parseInt(e.style.width) - x*64 > 3840 ||
+parseInt(e.style.top) + parseInt(e.style.height) - y*64 > 3840) {
+can_move = false
+}
+})
+if (can_move) {
+elements.forEach(e => {
+e.style.left = parseInt(e.style.left) - x*64 + 'px'
+e.style.top = parseInt(e.style.top) - y*64 + 'px'
+})
+}
+} else if (window.erasing) eraseElement(e.target)
+else if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
+})
+
+document.addEventListener('keydown', function(e) {
+if (e.ctrlKey && e.key == 'z') {
+document.querySelector('body>:last-child').remove()
+e.preventDefault() 
+} else if (e.keyCode == 17) { 
+document.body.style.cursor = 'move'
+} else if ((e.key.substring(0,5) == 'Arrow' && !e.target.textContent) || e.key.substring(0,4) == 'Page') {
+let direction = (e.key.endsWith('Up') || e.key.endsWith('Left')) ? 3 : 1
+let el = e.target.parentNode == document.body ? e.target : e.target.parentNode
+setDecoration(el, (parseInt(el.dataset.decoration || 0) + direction) % 4)
+}
+})
+document.addEventListener('keyup', e => {
+if (e.target.parentNode.clientHeight && e.target.clientHeight > e.target.parentNode.clientHeight) {
+e.target.parentNode.style.height = snap(e.target.clientHeight)
+}
+if (e.target.parentNode.clientWidth && e.target.clientWidth > e.target.parentNode.clientWidth) {
+e.target.parentNode.style.width = snap(e.target.clientWidth+64)
+}
+document.body.style.cursor = 'auto'
+save()
+})
+document.addEventListener('paste', e => e.preventDefault())
+window.onload = () => {
+location.hash.substring(1).split(';').slice(1).forEach(e => {
+e = decodeURIComponent(e.replace(/\$/g,'%0A').replace(/\+/g,' '))
+if (e) {
+let width = (chars.indexOf(e[0]) & 0x8) ? charToPos(e[3]) : 0
+let height = (chars.indexOf(e[0]) & 0x4) ? charToPos(e[3+!!width]) : 0
+createElement(
+[charToPos(e[1]), charToPos(e[2])],
+[width + charToPos(e[1]), height + charToPos(e[2])],
+false, e.substring(3+!!width+!!height), chars.indexOf(e[0]) & 0x3)
+}
+})
+}
+</script>
+</head>
+<body>
+</body>
+</html>
